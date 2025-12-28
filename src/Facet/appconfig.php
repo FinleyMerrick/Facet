@@ -65,7 +65,7 @@ class AppConfig {
                 $children[] = clone $reader; // clone reader to remember position
             }
 			
-            if ($reader->nodeType == XMLReader::END_ELEMENT && $reader->depth == $depth) { // aka we are exiting the node
+            if ($this->reader->nodeType == XMLReader::END_ELEMENT && $reader->depth == $depth) { // aka we are exiting the node
                 break;
             }
 		}
