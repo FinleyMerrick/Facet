@@ -6,42 +6,42 @@ namespace Facet;
 // Facilitates the reading of XML application configuration.
 class AppConfig {
 	// The path to the configuration file.
-	private $appConfigFilePath = $_SERVER["DOCUMENT_ROOT"] . "/app.config.xml";
+	private string $appConfigFilePath = $_SERVER["DOCUMENT_ROOT"] . "/app.config.xml";
 	
 	// The XML namespace of the configuration file.
-	private $xmlns = "http://facet.fiftiper.com/appConfig";
+	private string $xmlns = "http://facet.fiftiper.com/appConfig";
 	
 	// The XML reader.
-	private $reader;
+	private XMLReader $reader;
 	
 	public function __construct() {
-		$reader = new XMLReader();
+		$this->reader = new XMLReader();
 	}
 	
 	public function __destruct() {
-		$reader->close();
+		$this->reader->close();
 	}
 	
 	// Checks for the existence of the file, and prepares the reader for reading.
 	public function load() {
-		if (!file_exists($appConfigFilePath)) {
+		if (!file_exists($this->appConfigFilePath)) {
 			throw new FileNotFoundException($appConfigFilePath);
 		}
 		
-		resetReaderCursor();
+		$this->resetReaderCursor();
 	}
 	
 	// Forces the XML reader to re-read the document, placing the cursor into its initial position.
 	private function resetReaderCursor() {
-		$reader->close();
-		$reader->open($appConfigFilePath, "UTF-8", LIBXML_COMPACT & LIBXML_NOENT);
+		$this->reader->close();
+		$this->reader->open($this->appConfigFilePath, "UTF-8", LIBXML_COMPACT & LIBXML_NOENT);
 	}
 	
 	// Attempts to traverse to the topmost node with a name matching the provided name.
 	// Returns: a boolean indicating whether the node was found.
 	public function traverseToTLN($nodeName) {
-		while ($reader->read()) {
-			if ($reader->localName == $nodeName && $reader->namespaceURI == $this->xmlns) {
+		while ($this->reader->read()) {
+			if ($reader->localName == $nodeName && $this->reader->namespaceURI == $this->xmlns) {
 				return true;
 			}
 		}
@@ -52,16 +52,16 @@ class AppConfig {
 	// Creates an array of all children of the currently selected node
 	// Returns: the array
 	public function getNodeChildren() {
-		if ($reader->isEmptyElement) {
+		if ($this->reader->isEmptyElement) {
 			// No children
 			return array();
 		}
 		
 		$children = array();
-		$depth = $reader->depth;
+		$depth = $this->reader->depth;
 		
-		while ($reader->read()) {
-			if ($reader->nodeType == XMLReader::ELEMENT && $reader->depth == $depth + 1) {
+		while ($this->reader->read()) {
+			if ($this->reader->nodeType == XMLReader::ELEMENT && $reader->depth == $depth + 1) {
                 $children[] = clone $reader; // clone reader to remember position
             }
 			
