@@ -3,7 +3,7 @@
 
 namespace Facet;
 
-// Serves as the base class for all provider classes.
+// Serves as the base class for all service providers.
 abstract class ProviderBase {
 }
 ?>

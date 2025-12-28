@@ -1,6 +1,8 @@
 <?php
 /* Copyright (C) Facet 2025. All rights reserved. */
 
+namespace Facet;
+
 // Thrown when a file required by the framework is not found
 class FileNotFoundException extends \Exception {
 	public function __construct($filePath = "") {
