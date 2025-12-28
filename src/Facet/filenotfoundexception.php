@@ -5,7 +5,7 @@ namespace Facet;
 
 // Thrown when a file required by the framework is not found
 class FileNotFoundException extends \Exception {
-	public function __construct($filePath = "") {
+	public function __construct(string $filePath = "") {
 		$this->message = " was not found. Please verify its location and try again.";
 		
 		if ($filePath == "") {

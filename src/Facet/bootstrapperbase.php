@@ -3,6 +3,8 @@
 
 namespace Facet;
 
+require_once(__DIR__ . "/appconfig.php");
+
 use \Facet\Ioc;
 
 // Base class for the request bootstrapper.
@@ -13,8 +15,8 @@ abstract class BootstrapperBase {
 	// The entries in the facet node of the XML configuration.
 	private array $facetConfigEntries;
 	
-	// The IoC container
-	private IocContainer $iocContainer;
+	// The Facet IoC container
+	private FacetContainer $iocContainer;
 	
 	// Entry point into the Facet request pipeline
 	final public function run(): Response {
@@ -27,7 +29,7 @@ abstract class BootstrapperBase {
 		$this->facetConfigEntries = $appConfig->getNodeChildren();
 		
 		$this->onPreInitialize();
-		$this->iocContainer = new IocContainer();
+		
 		
 		$this->onInitialize();
 	}
