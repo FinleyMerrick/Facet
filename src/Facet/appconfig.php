@@ -25,7 +25,7 @@ class AppConfig {
 	// Checks for the existence of the file, and prepares the reader for reading.
 	public function load() {
 		if (!file_exists($this->appConfigFilePath)) {
-			throw new FileNotFoundException($appConfigFilePath);
+			throw new FileNotFoundException($this->appConfigFilePath);
 		}
 		
 		$this->resetReaderCursor();
@@ -41,7 +41,7 @@ class AppConfig {
 	// Returns: a boolean indicating whether the node was found.
 	public function traverseToTLN($nodeName) {
 		while ($this->reader->read()) {
-			if ($reader->localName == $nodeName && $this->reader->namespaceURI == $this->xmlns) {
+			if ($this->reader->localName == $nodeName && $this->reader->namespaceURI == $this->xmlns) {
 				return true;
 			}
 		}
@@ -61,11 +61,11 @@ class AppConfig {
 		$depth = $this->reader->depth;
 		
 		while ($this->reader->read()) {
-			if ($this->reader->nodeType == XMLReader::ELEMENT && $reader->depth == $depth + 1) {
-                $children[] = clone $reader; // clone reader to remember position
+			if ($this->reader->nodeType == XMLReader::ELEMENT && $this->reader->depth == $depth + 1) {
+                $children[] = clone $this->reader; // clone reader to remember position
             }
 			
-            if ($this->reader->nodeType == XMLReader::END_ELEMENT && $reader->depth == $depth) { // aka we are exiting the node
+            if ($this->reader->nodeType == XMLReader::END_ELEMENT && $this->reader->depth == $depth) { // aka we are exiting the node
                 break;
             }
 		}
